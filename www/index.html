@@ -10,11 +10,21 @@
     <script src="keys.js"></script>
     <script>
       // じゃんけんのハンド用変数（定数）
-      const hand_gu=0;
-      const hand_choki=1;
-      const hand_pa=2;
+      //役定数
+      const no_pair=0;
+      const one_pair=1;
+      const two_pair=2;
+      const three_of_a_kind=3;
+      const straight=4;
+      const flush=5;
+      const full_house=6;
+      const four_of_a_kind=7;
+      const straight_flush=8;
+      const royail_flush=9;
+
+
       // ハンド表示用配列
-      const hand_text = ["ぐー", "ちょき", "ぱー"];
+      const hand_text = ["チェンジ", "勝負", "降りる"];
       // 勝敗判定用変数（定数）
       const judge_win=0;
       const judge_draw=1;
@@ -26,39 +36,68 @@
         [judge_win, judge_loose, judge_draw],
       ];
       // 勝敗結果表示用配列
-      const judge_text = ["勝ち", "あいこ", "負け"];
+      const judge_text = ["勝利", "ドロー", "敗北"];
 
       // 連勝数記録
       let win_num = 0;
 
       // にふくら用おまじない
       let ncmb = new NCMB(appKey, clientKey);
-      let JankenScore = ncmb.DataStore("JankenScore");
+      let PokerScore = ncmb.DataStore("PokerScore");
       const key = "score";
 
       // ハイスコア
       let high_score = 0;
 
-      function gu() {
-        janken(hand_gu);
+      function no() {
+        hand(no_pair);
       }
 
-      function choki() {
-        janken(hand_choki);
+      function one() {
+        hand(one_pair);
       }
 
-      function pa() {
-        janken(hand_pa);
+      function two() {
+        hand(two_pair);
       }
 
-      function janken(player_hand){
+      function three() {
+        hand(three_of_a_kind);
+      }
+
+      function str() {
+        hand(straight);
+      }
+
+      function flu() {
+        hand(flush);
+      }
+
+      function full() {
+        hand(full_house);
+      }
+
+      function four() {
+        hand(four_of_a_kind);
+      }
+
+      function strflu() {
+        hand(straight_flush);
+      }
+
+      function royflu() {
+        hand(royail_flush);
+      }
+
+
+      function Poker(player_hand){
         // コンピュータの手を決定
-       let comp_hand = Math.floor(Math.random() * 3);
+       let comp_hand = Math.floor(Math.random() * 9);
         // 勝敗判定
         let result = judge[player_hand][comp_hand];
         // 結果表示
-        let msg="player:"+hand_text[player_hand]+"<br>"+
-            "comp:"+hand_text[comp_hand]+"<br>"+
+        let msg="player:"+Poker_text[player_hand]+"<br>"+
+            "comp:"+Poker_text[comp_hand]+"<br>"+
             "結果:" + judge_text[result];
         $("#result").html(msg);
         // 勝敗ごとの処理
@@ -66,7 +105,7 @@
           win_num++;
           $("#result2").html(win_num + "連勝!");
         } else if (result == judge_draw) {
-          $("#result2").html("あいこ");
+          $("#result2").html("ドロー");
         } else {
           gameover();
         }
@@ -74,7 +113,7 @@
 
       function newgame() {
         // ハイスコア表示
-        JankenScore.order(key, true).fetch()
+        PokerScore.order(key, true).fetch()
         .then(function(result){
           high_score = result.get(key);
           $("#highscore").html("ハイスコア：" + high_score + "連勝");
@@ -88,14 +127,14 @@
         $(".hand").css("display", "inline");
         // ニューゲームボタン非表示
         $("#newgame").css("display", "none");
-        $("#result").html("じゃんけん・・・ぽん")
+        $("#result").html("チェック！")
         $("#result2").html("");
       }
 
       function gameover() {
         let msg = "GAME OVER<br>";
         if(win_num>0) {
-          JankenScore.order(key, true).fetch()
+          PokerScore.order(key, true).fetch()
           .then(function(result){
             high_score = result.get(key);
             if(win_num > high_score) {
@@ -106,7 +145,7 @@
           });
 
           // スコア記録
-          db = new JankenScore();
+          db = new PokerScore();
           db.set(key, win_num).save();
 
           msg += win_num +  "連勝でした。<br>";
@@ -127,12 +166,12 @@
     </script>
 </head>
 <body>
-  <h1 class="text-white bg-primary">じゃんけん 連勝チャレンジ！</h1>
+  <h1 class="text-white bg-primary">Let's Poker！</h1>
   <div id="highscore" class="text-white bg-secondary"></div>
-  <div class="mx-auto" style="width: 200px">
-    <a onclick="gu();" class="btn btn-outline-primary hand" role="button">ぐー</a>
-    <a onclick="choki();" class="btn btn-outline-primary hand" role="button">ちょき</a>
-    <a onclick="pa();" class="btn btn-outline-primary hand" role="button">ぱー</a>
+  <div class="mx-auto" style="width: 300px">
+    <a onclick="chenge();" class="btn btn-outline-primary hand" role="button">/チェンジ</a>
+    <a onclick="check();" class="btn btn-outline-primary hand" role="button">チェック</a>
+    <a onclick="fall();" class="btn btn-outline-primary hand" role="button">フォール</a>
     <a onclick="newgame();" class="btn btn-info text-white" id="newgame" role="button">New Game</a>
   </div>
   <div id="result" class="text-white bg-secondary">
