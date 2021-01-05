@@ -24,17 +24,32 @@
 
 
       // ハンド表示用配列
-      const hand_text = ["チェンジ", "勝負", "降りる"];
+      const Poker_text = ["ノーペア", "ワンペア", "ツーペア", "スリーカード", "ストレート","フラッシュ" "フルハウス", "フォーカード", "ストレートフラッシュ", "ロイヤルストレートフラッシュ"];
+
       // 勝敗判定用変数（定数）
       const judge_win=0;
       const judge_draw=1;
       const judge_loose=2;
+      /*
       // 勝敗判定表
       const judge = [
         [judge_draw, judge_win, judge_loose],
         [judge_loose, judge_draw, judge_win],
         [judge_win, judge_loose, judge_draw],
-      ];
+      ];*/
+
+
+      //判定
+      /*if(player_hand==x>comp_hand==y){
+        win();
+      }else if(player_hand==x=comp_hand==y){
+        draw();
+      }else if(player_hand==x<comp_hand==y){
+        loose();
+      }*/
+
+
+
       // 勝敗結果表示用配列
       const judge_text = ["勝利", "ドロー", "敗北"];
 
@@ -49,52 +64,46 @@
       // ハイスコア
       let high_score = 0;
 
-      function no() {
-        hand(no_pair);
-      }
-
-      function one() {
-        hand(one_pair);
-      }
-
-      function two() {
-        hand(two_pair);
-      }
-
-      function three() {
-        hand(three_of_a_kind);
-      }
-
-      function str() {
-        hand(straight);
-      }
-
-      function flu() {
-        hand(flush);
-      }
-
-      function full() {
-        hand(full_house);
-      }
-
-      function four() {
-        hand(four_of_a_kind);
-      }
-
-      function strflu() {
-        hand(straight_flush);
-      }
-
-      function royflu() {
-        hand(royail_flush);
-      }
+      
+      //intの役
+      /*int hand_no_pair=0;
+      int hand_one_pair=1;
+      int hand_two_pair=2;
+      int hand_three_of_a_kind=3;
+      int hand_straight=4;
+      int hand_flush=5;
+      int hand_full_house=6;
+      int hand_four_of_a_kind=7;
+      int hand_straight_flush=8;
+      int hand_royail_flush=9;
+      */
 
 
-      function Poker(player_hand){
+      function Poker(player_hand==x){
         // コンピュータの手を決定
-       let comp_hand = Math.floor(Math.random() * 9);
+       let comp_hand = Math.floor(Math.random() * 9)==y;
         // 勝敗判定
-        let result = judge[player_hand][comp_hand];
+       // let result = judge[player_hand][comp_hand];
+
+       /*int player_hand==x;
+       int comp_hand==y;
+
+        if(player_hand==x>comp_hand==y){
+        judge_win();
+      }else if(player_hand==x=comp_hand==y){
+        judge_draw();
+      }else if(player_hand==x<comp_hand==y){
+        judge_loose();
+      }*/
+
+      if(player_hand==x>comp_hand==y){
+        judge_win();
+      }else if(player_hand==x=comp_hand==y){
+        judge_draw();
+      }else if(player_hand==x<comp_hand==y){
+        judge_loose();
+      }
+
         // 結果表示
         let msg="player:"+Poker_text[player_hand]+"<br>"+
             "comp:"+Poker_text[comp_hand]+"<br>"+
@@ -169,7 +178,8 @@
   <h1 class="text-white bg-primary">Let's Poker！</h1>
   <div id="highscore" class="text-white bg-secondary"></div>
   <div class="mx-auto" style="width: 300px">
-    <a onclick="chenge();" class="btn btn-outline-primary hand" role="button">chenge!</a>
+    <a onclick="start();" class="btn btn-outline-primary hand" role="button">スタート</a>
+    <a onclick="chenge();" class="btn btn-outline-primary hand" role="button">チェンジ</a>
     <a onclick="check();" class="btn btn-outline-primary hand" role="button">チェック</a>
     <a onclick="fall();" class="btn btn-outline-primary hand" role="button">フォール</a>
     <a onclick="newgame();" class="btn btn-info text-white" id="newgame" role="button">New Game</a>
