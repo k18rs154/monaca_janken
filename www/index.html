@@ -11,16 +11,16 @@
     <script>
       // じゃんけんのハンド用変数（定数）
       //役定数
-      const no_pair=0;
-      const one_pair=1;
-      const two_pair=2;
-      const three_of_a_kind=3;
-      const straight=4;
-      const flush=5;
-      const full_house=6;
-      const four_of_a_kind=7;
-      const straight_flush=8;
-      const royail_flush=9;
+      const Poker_no_pair=0;
+      const Poker_one_pair=1;
+      const Poker_two_pair=2;
+      const Poker_three_of_a_kind=3;
+      const Poker_straight=4;
+      const Poker_flush=5;
+      const Poker_full_house=6;
+      const Poker_four_of_a_kind=7;
+      const Poker_straight_flush=8;
+      const Poker_royail_flush=9;
 
 
       // ハンド表示用配列
@@ -30,25 +30,9 @@
       const judge_win=0;
       const judge_draw=1;
       const judge_loose=2;
-      /*
+     
       // 勝敗判定表
-      const judge = [
-        [judge_draw, judge_win, judge_loose],
-        [judge_loose, judge_draw, judge_win],
-        [judge_win, judge_loose, judge_draw],
-      ];*/
-
-
-      //判定
-      /*if(player_hand==x>comp_hand==y){
-        win();
-      }else if(player_hand==x=comp_hand==y){
-        draw();
-      }else if(player_hand==x<comp_hand==y){
-        loose();
-      }*/
-
-
+     
 
       // 勝敗結果表示用配列
       const judge_text = ["勝利", "ドロー", "敗北"];
@@ -64,47 +48,33 @@
       // ハイスコア
       let high_score = 0;
 
-      
       //intの役
-      /*int hand_no_pair=0;
-      int hand_one_pair=1;
-      int hand_two_pair=2;
-      int hand_three_of_a_kind=3;
-      int hand_straight=4;
-      int hand_flush=5;
-      int hand_full_house=6;
-      int hand_four_of_a_kind=7;
-      int hand_straight_flush=8;
-      int hand_royail_flush=9;
-      */
-
-
-      function Poker(player_hand==x){
-        // コンピュータの手を決定
-       let comp_hand = Math.floor(Math.random() * 9)==y;
-        // 勝敗判定
-       // let result = judge[player_hand][comp_hand];
-
-       /*int player_hand==x;
-       int comp_hand==y;
-
-        if(player_hand==x>comp_hand==y){
-        judge_win();
-      }else if(player_hand==x=comp_hand==y){
-        judge_draw();
-      }else if(player_hand==x<comp_hand==y){
-        judge_loose();
-      }*/
-
-      if(player_hand==x>comp_hand==y){
-        judge_win();
-      }else if(player_hand==x=comp_hand==y){
-        judge_draw();
-      }else if(player_hand==x<comp_hand==y){
-        judge_loose();
+      
+      //スタート
+      function start() {
+        let player_hand = Math.floor(Math.random() * 9);
+        let msg="player:"+Poker_text[player_hand]+"<br>"
+         // ハンドボタン表示
+        $(".hand2").css("display", "inline");
+        // ニューゲームボタン非表示
+        $(".hand1").css("display", "none");
+        $("#newgame").css("display", "none");
+        $("#result").html("チェック！")
+        $("#result2").html("");
       }
 
-        // 結果表示
+      //チェック.勝敗判定
+      function check(){
+        let comp_hand = Math.floor(Math.random() * 9)
+        let result =if(player_hand>comp_hand){
+        judge_win();
+      }else if(player_hand=comp_hand){
+        judge_draw();
+      }else if(player_hand<comp_hand){
+        judge_loose();
+      }
+      
+      // 結果表示
         let msg="player:"+Poker_text[player_hand]+"<br>"+
             "comp:"+Poker_text[comp_hand]+"<br>"+
             "結果:" + judge_text[result];
@@ -118,7 +88,25 @@
         } else {
           gameover();
         }
+
+        
       }
+
+      //チェンジ
+      function chenge(){
+        let player_hand = Math.floor(Math.random() * 9);
+        let msg="player:"+Poker_text[player_hand]+"<br>"
+      }
+
+      //フォール
+      function fall(){
+        function gameover()
+      }
+      $(function(){
+        start();
+      })
+      //function Poker(player_hand==x){
+       
 
       function newgame() {
         // ハイスコア表示
@@ -133,8 +121,30 @@
   
         win_num = 0;
         // ハンドボタン表示
-        $(".hand").css("display", "inline");
+        $(".hand1").css("display", "inline");
         // ニューゲームボタン非表示
+        $(".hand2").css("display", "none");
+        $("#newgame").css("display", "none");
+        $("#result").html("チェック！")
+        $("#result2").html("");
+      }
+
+      function game() {
+        // ハイスコア表示
+        PokerScore.order(key, true).fetch()
+        .then(function(result){
+          high_score = result.get(key);
+          $("#highscore").html("ハイスコア：" + high_score + "連勝");
+        })
+        .catch(function(error){
+          $("#highscore").html("ハイスコア：" + high_score + "連勝");
+        });
+  
+        win_num = 0;
+        // ハンドボタン表示
+        $(".hand2").css("display", "inline");
+        // ニューゲームボタン非表示
+        $(".hand1").css("display", "none");
         $("#newgame").css("display", "none");
         $("#result").html("チェック！")
         $("#result2").html("");
@@ -163,14 +173,15 @@
         }
         $("#result2").html(msg);
         // ハンドボタン非表示
-        $(".hand").css("display", "none");
+        $(".hand1").css("display", "none");
+        $(".hand2").css("display", "none");
         // ニューゲームボタン表示
         $("#newgame").css("display", "inline");
       }
 
       // ゲーム初期化
       $(function(){
-        newgame();
+        start();
       })
     </script>
 </head>
@@ -178,10 +189,10 @@
   <h1 class="text-white bg-primary">Let's Poker！</h1>
   <div id="highscore" class="text-white bg-secondary"></div>
   <div class="mx-auto" style="width: 300px">
-    <a onclick="start();" class="btn btn-outline-primary hand" role="button">スタート</a>
-    <a onclick="chenge();" class="btn btn-outline-primary hand" role="button">チェンジ</a>
-    <a onclick="check();" class="btn btn-outline-primary hand" role="button">チェック</a>
-    <a onclick="fall();" class="btn btn-outline-primary hand" role="button">フォール</a>
+    <a onclick="start();" class="btn btn-outline-primary hand1" role="button">スタート</a>
+    <a onclick="chenge();" class="btn btn-outline-primary hand2" role="button">チェンジ</a>
+    <a onclick="check();" class="btn btn-outline-primary hand2" role="button">チェック</a>
+    <a onclick="fall();" class="btn btn-outline-primary hand2" role="button">フォール</a>
     <a onclick="newgame();" class="btn btn-info text-white" id="newgame" role="button">New Game</a>
   </div>
   <div id="result" class="text-white bg-secondary">
